@@ -55,7 +55,7 @@ class ApiCredentials
      * Sets the $group
      *
      * @param string $group
-     * @return void
+     * @return ApiCredentials
      */
     public function setGroup($group)
     {
@@ -77,11 +77,12 @@ class ApiCredentials
      * Sets the Secret
      *
      * @param string $secret
-     * @return void
+     * @return ApiCredentials
      */
     public function setSecret($secret)
     {
         $this->secret = $secret;
+        return $this;
     }
 
     /**
