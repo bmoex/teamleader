@@ -42,7 +42,7 @@ class TeamleaderApi
     /**
      * @return Request\GeneralRequest
      */
-    protected function general()
+    public function general()
     {
         if ($this->generalRequest === null) {
             $this->generalRequest = new Request\GeneralRequest();
@@ -53,7 +53,7 @@ class TeamleaderApi
     /**
      * @return Request\CrmRequest
      */
-    protected function crm()
+    public function crm()
     {
         if ($this->crmRequest === null) {
             $this->crmRequest = new Request\CrmRequest();
@@ -64,7 +64,7 @@ class TeamleaderApi
     /**
      * @return Request\ProjectsRequest
      */
-    protected function projects()
+    public function projects()
     {
         if ($this->projectsRequest === null) {
             $this->projectsRequest = new Request\ProjectsRequest();

@@ -94,7 +94,6 @@ class ProjectsRequest extends AbstractRequest
         $response = $this->doRequest($action, $parameters);
 
         $projects = [];
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($response);
         foreach ($response as $project) {
             $projects[] = Model\Project::_create($project);
         }
