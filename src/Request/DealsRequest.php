@@ -249,8 +249,6 @@ class DealsRequest extends AbstractRequest
     {
         $fields = [
             'deal_id' => $deal->getId(),
-            'contact_or_company' => $deal->getFor(),
-            'contact_or_company_id' => $deal->getForId(),
             'title' => $deal->getTitle(),
             'source' => $deal->getSource(),
             'description' => $deal->getDescription(),
@@ -258,6 +256,15 @@ class DealsRequest extends AbstractRequest
             'sys_department_id' => null,
             'responsible_sys_client_id' => null,
         ];
+
+        $client = $deal->getClient();
+        if ($client instanceof Model\Contact) {
+            $parameters['contact_or_company'] = 'contact';
+            $parameters['contact_or_company_id'] = $client->getId();
+        } elseif ($client instanceof Model\Company) {
+            $parameters['contact_or_company'] = 'company';
+            $parameters['contact_or_company_id'] = $client->getId();
+        }
 
         $items = $deal->getItems();
         if (!empty($items)) {

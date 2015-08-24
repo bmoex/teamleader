@@ -57,7 +57,6 @@ class AbstractModel
             switch ($key) {
                 // Skip some -other- elements
                 case 'language_name':
-                case 'for':
                 case 'contact_or_company':
                     break;
 
@@ -83,14 +82,12 @@ class AbstractModel
                             break;
 
                         default:
-                            exit('SHOULD STILL MAP: ' . $target . '!');
+                            exit('SHOULD STILL MAP: ' . $target . '! Please report at https://github.com/bmoex/teamleader!');
                             break;
                     }
 
                     if (method_exists($instance, 'setClient')) {
                         $instance->setClient($value);
-                    } else {
-                        exit('Method setClient should exist!');
                     }
                     break;
 
@@ -100,7 +97,6 @@ class AbstractModel
                     break;
 
                 default:
-
                     $key = str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
                     $methodName = 'set' . $key;
                     if (method_exists($instance, $methodName)) {
@@ -112,6 +108,7 @@ class AbstractModel
                         }
 
                         $key = lcfirst($key);
+
                         // Always try to set the key
                         if (!isset($instance->{$key})) {
                             $instance->{$key} = $value;

@@ -20,14 +20,9 @@ class TicketMessage extends AbstractModel
     protected $date;
 
     /**
-     * @var string
+     * @var Contact|Company
      */
-    protected $from;
-
-    /**
-     * @var integer
-     */
-    protected $fromId;
+    protected $client;
 
     /**
      * @var boolean
@@ -82,6 +77,27 @@ class TicketMessage extends AbstractModel
     }
 
     /**
+     * Returns the Client
+     *
+     * @return Company|Contact
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Sets the Client
+     *
+     * @param Company|Contact $client
+     * @return void
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+    }
+
+    /**
      * Returns the Date
      *
      * @return \DateTime
@@ -100,48 +116,6 @@ class TicketMessage extends AbstractModel
     public function setDate($date)
     {
         $this->date = $this->parseDate($date);
-    }
-
-    /**
-     * Returns the From
-     *
-     * @return string
-     */
-    public function getFrom()
-    {
-        return $this->from;
-    }
-
-    /**
-     * Sets the From
-     *
-     * @param string $from
-     * @return void
-     */
-    public function setFrom($from)
-    {
-        $this->from = $from;
-    }
-
-    /**
-     * Returns the FromId
-     *
-     * @return int
-     */
-    public function getFromId()
-    {
-        return $this->fromId;
-    }
-
-    /**
-     * Sets the FromId
-     *
-     * @param int $fromId
-     * @return void
-     */
-    public function setFromId($fromId)
-    {
-        $this->fromId = $fromId;
     }
 
     /**

@@ -20,14 +20,9 @@ class Ticket extends AbstractModel
     const STATUS_CLOSED = 'closed';
 
     /**
-     * @var string
+     * @var Contact|Company
      */
-    protected $for;
-
-    /**
-     * @var integer
-     */
-    protected $forId;
+    protected $client;
 
     /**
      * @var string
@@ -65,6 +60,27 @@ class Ticket extends AbstractModel
     protected $timeTracking;
 
     /**
+     * Returns the Client
+     *
+     * @return Company|Contact
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Sets the Client
+     *
+     * @param Company|Contact $client
+     * @return void
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+    }
+
+    /**
      * Returns the TimeSpent
      *
      * @return int
@@ -83,48 +99,6 @@ class Ticket extends AbstractModel
     public function setTimeSpent($timeSpent)
     {
         $this->timeSpent = $timeSpent;
-    }
-
-    /**
-     * Returns the For
-     *
-     * @return string
-     */
-    public function getFor()
-    {
-        return $this->for;
-    }
-
-    /**
-     * Sets the For
-     *
-     * @param string $for
-     * @return void
-     */
-    public function setFor($for)
-    {
-        $this->for = $for;
-    }
-
-    /**
-     * Returns the ForId
-     *
-     * @return int
-     */
-    public function getForId()
-    {
-        return $this->forId;
-    }
-
-    /**
-     * Sets the ForId
-     *
-     * @param int $forId
-     * @return void
-     */
-    public function setForId($forId)
-    {
-        $this->forId = $forId;
     }
 
     /**

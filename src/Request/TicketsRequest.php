@@ -96,9 +96,15 @@ class TicketsRequest extends AbstractRequest
             'message' => $message->getMessage(),
         ];
 
-        if (null !== $message->getFrom()) {
-            $parameters['from'] = $message->getFrom();
-            $parameters['from_id'] = $message->getFromId();
+        $client = $message->getClient();
+        if (null !== $client) {
+            if ($client instanceof Model\Contact) {
+                $parameters['from'] = 'contact';
+                $parameters['from_id'] = $client->getId();
+            } elseif ($client instanceof Model\Company) {
+                $parameters['from'] = 'company';
+                $parameters['from_id'] = $client->getId();
+            }
         }
 
         if (null !== $ticketStatus) {
@@ -242,9 +248,16 @@ class TicketsRequest extends AbstractRequest
             'ticket_id' => $ticket->getId(),
             'subject' => $ticket->getSubject(),
             'description' => $ticket->getDescription(),
-            'contact_or_company' => $ticket->getFor(),
-            'contact_or_company_id' => $ticket->getForId(),
         ];
+
+        $client = $ticket->getClient();
+        if ($client instanceof Model\Contact) {
+            $parameters['contact_or_company'] = 'contact';
+            $parameters['contact_or_company_id'] = $client->getId();
+        } elseif ($client instanceof Model\Company) {
+            $parameters['contact_or_company'] = 'company';
+            $parameters['contact_or_company_id'] = $client->getId();
+        }
 
         // Include the custom fields
         if ($ticket->getCustomFields()) {

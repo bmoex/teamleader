@@ -15,14 +15,9 @@ class Deal extends AbstractModel
     protected $title;
 
     /**
-     * @var string
+     * @var Contact|Company
      */
-    protected $for;
-
-    /**
-     * @var integer
-     */
-    protected $forId;
+    protected $client;
 
     /**
      * @var string
@@ -121,45 +116,24 @@ class Deal extends AbstractModel
     }
 
     /**
-     * Returns the For
+     * Returns the Client
      *
-     * @return string
+     * @return Company|Contact
      */
-    public function getFor()
+    public function getClient()
     {
-        return $this->for;
+        return $this->client;
     }
 
     /**
-     * Sets the For
+     * Sets the Client
      *
-     * @param string $for
+     * @param Company|Contact $client
      * @return void
      */
-    public function setFor($for)
+    public function setClient($client)
     {
-        $this->for = $for;
-    }
-
-    /**
-     * Returns the ForId
-     *
-     * @return int
-     */
-    public function getForId()
-    {
-        return $this->forId;
-    }
-
-    /**
-     * Sets the ForId
-     *
-     * @param int $forId
-     * @return void
-     */
-    public function setForId($forId)
-    {
-        $this->forId = $forId;
+        $this->client = $client;
     }
 
     /**
