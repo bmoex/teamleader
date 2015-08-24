@@ -1,8 +1,18 @@
 <?php
 namespace Serfhos\Teamleader\Model;
 
+/**
+ * Model: Contact
+ *
+ * @package Serfhos\Teamleader\Model
+ */
 class Contact extends AbstractModel
 {
+
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @var string
@@ -118,6 +128,30 @@ class Contact extends AbstractModel
      * @var array
      */
     protected $tags;
+
+    /**
+     * Returns the Name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        if ($this->name === null) {
+            $this->name = trim($this->getForename() . ' ' . $this->getSurname());
+        }
+        return $this->name;
+    }
+
+    /**
+     * Sets the Name
+     *
+     * @param string $name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
     /**
      * Returns the Forename

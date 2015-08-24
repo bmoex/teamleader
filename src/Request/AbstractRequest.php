@@ -4,6 +4,11 @@ namespace Serfhos\Teamleader\Request;
 use Serfhos\Teamleader\Configuration;
 use Serfhos\Teamleader\Exception;
 
+/**
+ * Request: Generic usage of requests
+ *
+ * @package Serfhos\Teamleader\Request
+ */
 abstract class AbstractRequest
 {
 
@@ -49,7 +54,7 @@ abstract class AbstractRequest
         $curl = curl_init();
 
         $options = Configuration\CurlOptions::getInstance()
-            ->setUserAgent('PHP Teamleader/' . static::VERSION)
+            ->setUserAgent('Serfhos Teamleader/' . static::VERSION)
             ->create($url, $fields);
         curl_setopt_array($curl, $options);
 
@@ -77,8 +82,8 @@ abstract class AbstractRequest
 
         if (false === $return) {
             throw new Exception\DefaultException('Teamleader - Invalid response', 1440163474);
-        } elseif (null === $return && !empty($response)) {
-            throw new Exception\DefaultException($response);
+        } elseif (null === $return && !empty($response) && $response !== 'OK') {
+            throw new Exception\DefaultException($response, 1440424467);
         }
 
         // return

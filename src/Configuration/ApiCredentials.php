@@ -10,6 +10,16 @@ class ApiCredentials
 {
 
     /**
+     * @var string
+     */
+    private $group;
+
+    /**
+     * @var string
+     */
+    private $secret;
+
+    /**
      * Private constructor so nobody else can instance it
      */
     private function __construct()
@@ -32,14 +42,17 @@ class ApiCredentials
     }
 
     /**
-     * @var string
+     * Add credentials to given fields
+     *
+     * @param array $fields
+     * @return array
      */
-    protected $group;
-
-    /**
-     * @var string
-     */
-    protected $secret;
+    public function addCredentials(array $fields = [])
+    {
+        $fields['api_group'] = $this->getGroup();
+        $fields['api_secret'] = $this->getSecret();
+        return $fields;
+    }
 
     /**
      * Returns the Group
@@ -83,19 +96,6 @@ class ApiCredentials
     {
         $this->secret = $secret;
         return $this;
-    }
-
-    /**
-     * Add credentials to given fields
-     *
-     * @param array $fields
-     * @return array
-     */
-    public function addCredentials(array $fields = [])
-    {
-        $fields['api_group'] = $this->getGroup();
-        $fields['api_secret'] = $this->getSecret();
-        return $fields;
     }
 
 }

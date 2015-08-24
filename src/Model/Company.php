@@ -1,6 +1,11 @@
 <?php
 namespace Serfhos\Teamleader\Model;
 
+/**
+ * Model: Company
+ *
+ * @package Serfhos\Teamleader\Model
+ */
 class Company extends AbstractModel
 {
 
@@ -626,6 +631,32 @@ class Company extends AbstractModel
     public function setTags(array $tags)
     {
         $this->tags = $tags;
+    }
+
+    /**
+     * Add a tag value
+     *
+     * @param integer $tag
+     * @return void
+     */
+    public function addTag($tag)
+    {
+        $this->tags[] = $tag;
+        $this->tags = array_unique($this->tags);
+    }
+
+    /**
+     * Remove a tag value
+     *
+     * @param integer $tag
+     * @return void
+     */
+    public function removeTag($tag)
+    {
+        $index = array_search($tag, $this->tags);
+        if ($index !== false) {
+            unset($this->tags[$index]);
+        }
     }
 
 }

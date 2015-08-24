@@ -12,43 +12,75 @@ class GeneralRequest extends AbstractRequest
 {
 
     /**
+     * I don't know why this is also displayed in the general page
+     * Use UsersTeamsRequest::getUsers() instead
+     *
+     * @see http://apidocs.teamleader.be/general.php
+     * @see UsersTeamsRequest::getUsers()
+     * @deprecated
      * @return array<Model\User>
      */
     public function getUsers()
     {
-        $action = 'getUsers.php';
-        $response = $this->doRequest($action);
-        $users = [];
-        foreach ($response as $user) {
-            $users[] = Model\User::_create($user);
-        }
-
-        return $users;
+        $usersTeamsRequest = new UsersTeamsRequest();
+        return $usersTeamsRequest->getUsers();
     }
 
     /**
+     * Get all departments
+     *
      * @return array<\Serfhos\Teamleader\Model\Department>
      */
     public function getDepartments()
     {
         $action = 'getDepartments.php';
+
+        $response = $this->doRequest($action, []);
+        $departments = [];
+        foreach ($response as $department) {
+            $departments[] = Model\Department::_create($department);
+        }
+        return $departments;
     }
 
     /**
-     * //@TODO
-     * @return array<\Serfhos\Teamleader\Model\Tag>
+     * Get all tags
+     *
+     * @return array<Model\Tag>
      */
     public function getTags()
     {
         $action = 'getTags.php';
+
+        $response = $this->doRequest($action, []);
+        $tags = [];
+        foreach ($response as $id => $value) {
+            $tag = new Model\Tag();
+            $tag->setId($id);
+            $tag->setName($value);
+            $tags[] = $tag;
+        }
+        return $tags;
     }
 
     /**
-     * //@TODO
-     * @return array<\Serfhos\Teamleader\Model\Segment>
+     * @param string $objectType
+     * @return array <Model\Segment>
      */
-    public function getSegments()
+    public function getSegments($objectType)
     {
         $action = 'getSegments.php';
+        $parameters = [
+            'object_type' => $objectType
+        ];
+
+        return $this->doRequest($action, $parameters);
+        // @TODO map to model
+        /**
+         * $segments = [];
+         * foreach ($response as $id => $value) {
+         * }
+         * return $segments;
+         */
     }
 }

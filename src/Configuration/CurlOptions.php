@@ -10,28 +10,6 @@ class CurlOptions
 {
 
     /**
-     * Private constructor so nobody else can instance it
-     */
-    private function __construct()
-    {
-    }
-
-    /**
-     * Returns the *Singleton* instance of this class.
-     *
-     * @return CurlOptions The *Singleton* instance.
-     */
-    public static function getInstance()
-    {
-        static $instance = null;
-        if (null === $instance) {
-            $instance = new static();
-        }
-
-        return $instance;
-    }
-
-    /**
      * Verify secured ssl connection
      *
      * @var boolean
@@ -56,6 +34,102 @@ class CurlOptions
      * @var integer
      */
     protected $port = 443;
+
+    /**
+     * Private constructor so nobody else can instance it
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * Returns the *Singleton* instance of this class.
+     *
+     * @return CurlOptions The *Singleton* instance.
+     */
+    public static function getInstance()
+    {
+        static $instance = null;
+        if (null === $instance) {
+            $instance = new static();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * Create options based on target and parameters
+     *
+     * @param string $target
+     * @param array $parameters
+     * @return array
+     */
+    public function create($target, array $parameters = [])
+    {
+        $options = [];
+
+        $options[CURLOPT_POST] = true;
+        $options[CURLOPT_POSTFIELDS] = $parameters;
+
+        // set options
+        $options[CURLOPT_URL] = $target;
+        $options[CURLOPT_PORT] = $this->getPort();
+        $options[CURLOPT_USERAGENT] = $this->getUserAgent();
+        $options[CURLOPT_FOLLOWLOCATION] = true;
+
+        if (!$this->getSslVerify()) {
+            $options[CURLOPT_SSL_VERIFYPEER] = false;
+            $options[CURLOPT_SSL_VERIFYHOST] = false;
+        }
+
+        $options[CURLOPT_RETURNTRANSFER] = true;
+        $options[CURLOPT_TIMEOUT] = $this->getTimeOut();
+        return $options;
+    }
+
+    /**
+     * Returns the Port
+     *
+     * @return integer
+     */
+    public function getPort()
+    {
+        return $this->port;
+    }
+
+    /**
+     * Sets the $port
+     *
+     * @param integer $port
+     * @return CurlOptions
+     */
+    public function setPort($port)
+    {
+        $this->port = $port;
+        return $this;
+    }
+
+    /**
+     * Returns the UserAgent
+     *
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        return $this->userAgent;
+    }
+
+    /**
+     * Sets the $userAgent
+     *
+     * @param string $userAgent
+     * @return CurlOptions
+     */
+    public function setUserAgent($userAgent)
+    {
+        $this->userAgent = $userAgent;
+        return $this;
+    }
 
     /**
      * Returns the SslVerify
@@ -99,79 +173,5 @@ class CurlOptions
     {
         $this->timeOut = $timeOut;
         return $this;
-    }
-
-    /**
-     * Returns the UserAgent
-     *
-     * @return string
-     */
-    public function getUserAgent()
-    {
-        return $this->userAgent;
-    }
-
-    /**
-     * Sets the $userAgent
-     *
-     * @param string $userAgent
-     * @return CurlOptions
-     */
-    public function setUserAgent($userAgent)
-    {
-        $this->userAgent = $userAgent;
-        return $this;
-    }
-
-    /**
-     * Returns the Port
-     *
-     * @return integer
-     */
-    public function getPort()
-    {
-        return $this->port;
-    }
-
-    /**
-     * Sets the $port
-     *
-     * @param integer $port
-     * @return CurlOptions
-     */
-    public function setPort($port)
-    {
-        $this->port = $port;
-        return $this;
-    }
-
-    /**
-     * Create options based on target and parameters
-     *
-     * @param string $target
-     * @param array $parameters
-     * @return array
-     */
-    public function create($target, array $parameters = [])
-    {
-        $options = [];
-
-        $options[CURLOPT_POST] = true;
-        $options[CURLOPT_POSTFIELDS] = $parameters;
-
-        // set options
-        $options[CURLOPT_URL] = $target;
-        $options[CURLOPT_PORT] = $this->getPort();
-        $options[CURLOPT_USERAGENT] = $this->getUserAgent();
-        $options[CURLOPT_FOLLOWLOCATION] = true;
-
-        if (!$this->getSslVerify()) {
-            $options[CURLOPT_SSL_VERIFYPEER] = false;
-            $options[CURLOPT_SSL_VERIFYHOST] = false;
-        }
-
-        $options[CURLOPT_RETURNTRANSFER] = true;
-        $options[CURLOPT_TIMEOUT] = $this->getTimeOut();
-        return $options;
     }
 }
