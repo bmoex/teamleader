@@ -10,9 +10,20 @@ class Milestone extends AbstractModel
 {
 
     /**
+     * Billing types
+     */
+    const BILLING_TYPE_FIXED = 'fixed_price';
+    const BILLING_TYPE_TIME_MATERIAL = 'time_and_material';
+
+    /**
      * @var string
      */
     protected $title;
+
+    /**
+     * @var string
+     */
+    protected $billingType;
 
     /**
      * @var \DateTime
@@ -89,6 +100,27 @@ class Milestone extends AbstractModel
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * Returns the BillingType
+     *
+     * @return string
+     */
+    public function getBillingType()
+    {
+        return $this->billingType;
+    }
+
+    /**
+     * Sets the BillingType
+     *
+     * @param string $billingType
+     * @return void
+     */
+    public function setBillingType($billingType)
+    {
+        $this->billingType = $billingType;
     }
 
     /**

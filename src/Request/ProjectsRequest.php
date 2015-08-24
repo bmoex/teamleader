@@ -132,11 +132,51 @@ class ProjectsRequest extends AbstractRequest
     }
 
     /**
+     * Add project
+     *
+     * @todo finish responsible id's
      * @param Model\Project $project
+     * @param Model\Milestone $milestone
      * @return boolean
+     * @throws Exception\ArgumentException
      */
-    public function addProject(Model\Project $project)
+    public function addProject(Model\Project $project, Model\Milestone $milestone)
     {
+        if ($project->getId() > 0) {
+            throw new Exception\ArgumentException('An teamleader ID is already set in project, add is not allowed.',
+                1440437772);
+        }
+        if ($milestone->getId() > 0) {
+            throw new Exception\ArgumentException('An teamleader ID is already set in milestone, add is not allowed.',
+                1440437773);
+        }
+
+        $action = 'addProject.php';
+        $parameters = [
+            'project_name' => $project->getTitle(),
+            'project_budget' => $project->getBudgetIndication(),
+            //@todo
+            //'project_responsible_user_id' => $project->getResponsibleUserId(),
+            'project_start_date' => $project->getStartDate()->format('d/m/Y'),
+            'milestone_title' => $milestone->getTitle(),
+            'milestone_budget' => $milestone->getBudget(),
+            'milestone_invoiceable' => $milestone->getInvoiceable(),
+            'milestone_due_date' => $milestone->getDueDate()->format('d/m/Y'),
+            'milestone_billing_type' => $milestone->getBillingType(),
+            //@todo
+            //'milestone_responsible_user_id' => $milestone->getResponsibleUserId(),
+        ];
+
+        $client = $project->getClient();
+        if ($client instanceof Model\Contact) {
+            $parameters['contact_or_company'] = 'contact';
+            $parameters['contact_or_company_id'] = $client->getId();
+        } elseif ($client instanceof Model\Company) {
+            $parameters['contact_or_company'] = 'company';
+            $parameters['contact_or_company_id'] = $client->getId();
+        }
+
+        return (bool) $this->doRequest($action, $parameters);
     }
 
     /**
@@ -181,19 +221,62 @@ class ProjectsRequest extends AbstractRequest
     }
 
     /**
+     * Add milestone to project
+     *
+     * @param Model\Project $project
      * @param Model\Milestone $milestone
+     * @param Model\Milestone $parentMilestone
      * @return boolean
+     * @throws Exception\ArgumentException
      */
-    public function addMilestone(Model\Milestone $milestone)
-    {
+    public function addMilestone(
+        Model\Project $project,
+        Model\Milestone $milestone,
+        Model\Milestone $parentMilestone = null
+    ) {
+        if ($milestone->getId() > 0) {
+            throw new Exception\ArgumentException('An teamleader ID is already set, add is not allowed.',
+                1440437852);
+        }
+
+        $action = 'addMilestone.php';
+        $parameters = [
+            'project_id' => $project->getId(),
+            'title' => $milestone->getTitle(),
+            'budget' => $milestone->getBudget(),
+            'invoiceable' => $milestone->getInvoiceable(),
+            'due_date' => $milestone->getDueDate()->format('d/m/Y'),
+            //@todo
+            //'responsible_crm_client_id' => $milestone->getResponsibleUserId(),
+            'billing_type' => $milestone->getBillingType(),
+        ];
+
+        if (null !== $parentMilestone) {
+            $parameters['critical_path'] = $parentMilestone->getId();
+        }
+
+        return (bool) $this->doRequest($action, $parameters);
     }
 
     /**
+     * Delete milestone
+     *
      * @param Model\Milestone $milestone
      * @return boolean
+     * @throws Exception\ArgumentException
      */
     public function deleteMilestone(Model\Milestone $milestone)
     {
+        if ($milestone->getId() > 0) {
+            throw new Exception\ArgumentException('An teamleader ID is already set, delete is not allowed.',
+                1440437853);
+        }
+
+        $action = 'deleteMilestone.php';
+        $parameters = [
+            'milestone_id' => $milestone->getId(),
+        ];
+        return (bool) $this->doRequest($action, $parameters);
     }
 
     /**
@@ -252,6 +335,9 @@ class ProjectsRequest extends AbstractRequest
     }
 
     /**
+     * Add related party to project
+     *
+     * @param Model\LinkedProjectClient $projectClient
      * @return boolean
      */
     public function addRelatedPartyToProject(Model\LinkedProjectClient $projectClient)
