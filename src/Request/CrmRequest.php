@@ -130,6 +130,7 @@ class CrmRequest extends AbstractRequest
         $action = 'linkContactToCompany.php';
         switch ($mode) {
             case static::LINK_CONTACT_COMPANY_MODE_LINK:
+            case static::LINK_CONTACT_COMPANY_MODE_UNLINK:
                 $parameters = [
                     'contact_id' => $companyContact->getContact()->getId(),
                     'company_id' => $company->getId(),
@@ -138,19 +139,10 @@ class CrmRequest extends AbstractRequest
                 ];
                 break;
 
-            case static::LINK_CONTACT_COMPANY_MODE_UNLINK:
-                $parameters = [
-                    'contact_id' => $companyContact->getContact()->getId(),
-                    'company_id' => $company->getId(),
-                    'mode' => $mode,
-                ];
-                break;
-
             default:
                 throw new ArgumentException('Unknown mode given (' . $mode . ')', 1440407632);
                 break;
         }
-
         return (bool) $this->doRequest($action, $parameters);
     }
 

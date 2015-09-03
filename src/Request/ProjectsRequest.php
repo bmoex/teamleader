@@ -64,7 +64,7 @@ class ProjectsRequest extends AbstractRequest
      * @param Model\Company $company
      * @param boolean $deepSearch
      * @param boolean $showInactiveProjects
-     * @return array<Model\LinkedProjectClient>
+     * @return array<Model\Project>
      * @throws Exception\ArgumentException
      */
     public function getProjectsByClient(
@@ -86,11 +86,9 @@ class ProjectsRequest extends AbstractRequest
         if ($contact !== null) {
             $parameters['contact_or_company'] = 'contact';
             $parameters['contact_or_company_id'] = $contact->getId();
-            $client = $contact;
         } elseif ($company !== null) {
             $parameters['contact_or_company'] = 'company';
             $parameters['contact_or_company_id'] = $company->getId();
-            $client = $company;
         }
 
         $parameters['deep_search'] = $deepSearch;
@@ -101,12 +99,7 @@ class ProjectsRequest extends AbstractRequest
         $response = $this->doRequest($action, $parameters);
         $projects = [];
         foreach ($response as $project) {
-            $projectClient = new Model\LinkedProjectClient();
-            $projectClient->setProject(Model\Project::_create($project));
-            $projectClient->setClient($client);
-            $projectClient->setRole($project['role']);
-
-            $projects[] = $projectClient;
+            $projects[] = Model\Project::_create($project);
         }
         return $projects;
     }
@@ -359,5 +352,20 @@ class ProjectsRequest extends AbstractRequest
         }
 
         return (bool) $this->doRequest($action, $parameters);
+    }
+
+    /**
+     * Get all users based on given project
+     *
+     * @return array
+     */
+    public function getUsersOnProject(Model\Project $project)
+    {
+        $action = 'getUsersOnProject.php';
+        $parameters = [
+            'project_id' => $project->getId(),
+        ];
+
+        return $this->doRequest($action, $parameters);
     }
 }

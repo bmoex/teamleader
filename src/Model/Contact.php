@@ -601,7 +601,7 @@ class Contact extends AbstractModel
      */
     public function getLinkedCompanyIds()
     {
-        return $this->linkedCompanyIds;
+        return (array) $this->linkedCompanyIds;
     }
 
     /**

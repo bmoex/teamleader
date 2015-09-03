@@ -20,7 +20,7 @@ class LinkedProjectClient
     protected $project;
 
     /**
-     * @var Contact|Company
+     * @var Contact|Company|User
      */
     protected $client;
 
@@ -72,27 +72,6 @@ class LinkedProjectClient
     public function setClient($client)
     {
         $this->client = $client;
-    }
-
-    /**
-     * Returns the Name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Sets the Name
-     *
-     * @param string $name
-     * @return void
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
     }
 
     /**
